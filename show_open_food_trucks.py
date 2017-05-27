@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-
-# Make sure to install requests before running:
-# > pip install requests
-# Documentation for the requests library can be found here: http://docs.python-requests.org/en/master/
-
 import datetime
 import requests
 
@@ -26,22 +20,26 @@ class FoodTruckFetcher(object):
         response = requests.get(self.url)
         if response.status_code == 200:
             truck_data = response.json()
+
             for raw_truck in truck_data:
                 food_truck = FoodTruck(raw_truck['applicant'],
                                     raw_truck['location'],
                                     raw_truck['starttime'],
                                     raw_truck['endtime'])
+
                 if food_truck.open_now():
                     self.trucks.append(food_truck)
+
             self.trucks.sort(key=lambda truck: truck.name)
             self.print_ten_trucks()
         else:
             raise BadResponseError
 
     def print_ten_trucks(self):
+        # print the headline first
         print self
-        if len(self.trucks) > 10:
-            pass
+        # then print only 10 trucks. even if the list is shorter than 10,
+        # using the for loop allows us to avoid throwing an IndexError
         for truck in self.trucks[0:10]:
             print truck
 
@@ -65,7 +63,7 @@ class BadResponseError(Exception):
 def _get_weekday():
     """
     Python's `datetime` module assigns the value of 0 to Monday, while
-    the City of SF API assings 0 to Sunday. We need to convert the datetime
+    the City of SF API assigns 0 to Sunday. We need to convert the datetime
     object to a `dayorder` attribute to make a more efficient API call.
     """
     python_weekday = datetime.datetime.now().weekday()
