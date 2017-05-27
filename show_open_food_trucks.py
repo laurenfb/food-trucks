@@ -13,9 +13,6 @@ class FoodTruckFetcher(object):
         except BadResponseError:
             print "Bad response from API. Please try again."
 
-    def __str__(self):
-        return "\nNAME     ::     ADDRESS\n------------------------"
-
     def fetch_trucks(self):
         response = requests.get(self.url)
         if response.status_code == 200:
@@ -36,12 +33,16 @@ class FoodTruckFetcher(object):
             raise BadResponseError
 
     def print_ten_trucks(self):
-        # print the headline first
-        print self
-        # then print only 10 trucks. even if the list is shorter than 10,
-        # using the for loop allows us to avoid throwing an IndexError
-        for truck in self.trucks[0:10]:
-            print truck
+        if self.trucks:
+            print "First 10 Food Trucks currently open:"
+            print "NAME      ::     ADDRESS"
+            print "------------------------"
+            # per spec, print only 10 trucks. even if the list is shorter than 10,
+            # using the for loop allows us to avoid throwing an IndexError
+            for truck in self.trucks[0:10]:
+                print truck
+        else:
+            print "No trucks open right now. Sorry!"
 
 class FoodTruck(object):
     def __init__(self, name, address, open_time, close_time):
