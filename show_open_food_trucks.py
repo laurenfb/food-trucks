@@ -49,15 +49,15 @@ class FoodTruck(object):
     def __init__(self, name, address, open_time, close_time):
         self.name = name
         self.address = address
-        self.open_time = open_time
-        self.close_time = close_time
+        self.open_time = datetime.datetime.strptime(open_time, '%I%p').time()
+        self.close_time = datetime.datetime.strptime(close_time, '%I%p').time()
 
     def __str__(self):
         return "{}, {}".format(self.name, self.address)
 
     def open_now(self):
-        now = datetime.datetime.now()
-        return True
+        now = datetime.datetime.now().time()
+        return now > self.open_time and now < self.close_time
 
 class BadResponseError(Exception):
     pass
