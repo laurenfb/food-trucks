@@ -20,7 +20,7 @@ class FoodTruckFetcher(object):
             print "Bad response from API. Please try again."
 
     def __str__(self):
-        return "NAME     ::     ADDRESS"
+        return "\nNAME     ::     ADDRESS\n------------------------"
 
     def fetch_trucks(self):
         response = requests.get(self.url)
