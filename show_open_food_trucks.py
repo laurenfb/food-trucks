@@ -7,6 +7,7 @@ class FoodTruckFetcher(object):
 
         self.url = "http://data.sfgov.org/resource/bbb8-hzi6.json?dayorder={}".format(today)
         self.trucks = []
+        self.TRUCKS_TO_PRINT = 10
 
         try:
             self.fetch_trucks()
@@ -28,18 +29,18 @@ class FoodTruckFetcher(object):
                     self.trucks.append(food_truck)
 
             self.trucks.sort(key=lambda truck: truck.name)
-            self.print_ten_trucks()
+            self.print_trucks(self.TRUCKS_TO_PRINT)
         else:
             raise BadResponseError
 
-    def print_ten_trucks(self):
+    def print_trucks(self, number_to_print):
         if self.trucks:
-            print "First 10 Food Trucks currently open:"
+            print "First {} Food Trucks currently open:".format(number_to_print)
             print "NAME      ::     ADDRESS"
             print "------------------------"
-            # per spec, print only 10 trucks. even if the list is shorter than 10,
+            # per spec, print only 10 trucks. even if the list is shorter,
             # using the for loop allows us to avoid throwing an IndexError
-            for truck in self.trucks[0:10]:
+            for truck in self.trucks[0:number_to_print]:
                 print truck
         else:
             print "No trucks open right now. Sorry!"
